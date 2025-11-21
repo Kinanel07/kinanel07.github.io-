@@ -12,6 +12,54 @@ const scoreInferiorMethod = document.querySelector("#score-inferior .score-metho
 
 const recomendacionesContainer = document.getElementById("recomendaciones-container");
 const tablaDatosContainer = document.getElementById("tabla-datos");
+// Datos de ejemplo: reemplaza con tus rutas y datos reales
+const fotosData = [
+    {src: "fotos/pelvis1.jpg", bodyPart: "Pelvis", method: "Metodo1", info: "Datos de Pelvis, Método 1"},
+    {src: "fotos/pelvis2.jpg", bodyPart: "Pelvis", method: "Metodo2", info: "Datos de Pelvis, Método 2"},
+    {src: "fotos/l5_1.jpg", bodyPart: "L5", method: "Metodo1", info: "Datos de L5, Método 1"},
+    {src: "fotos/t8_1.jpg", bodyPart: "T8", method: "Metodo1", info: "Datos de T8, Método 1"},
+    // Agrega más fotos según tu repositorio
+];
+
+// Referencias a elementos
+const galleryContainer = document.getElementById("gallery-container");
+const bodyPartFilter = document.getElementById("body-part-filter");
+const methodFilter = document.getElementById("method-filter");
+
+// Función para mostrar fotos según filtros
+function displayPhotos() {
+    const bodyPartValue = bodyPartFilter.value;
+    const methodValue = methodFilter.value;
+
+    // Filtrado
+    const filtered = fotosData.filter(foto => 
+        (bodyPartValue === "all" || foto.bodyPart === bodyPartValue) &&
+        (methodValue === "all" || foto.method === methodValue)
+    );
+
+    // Limpiar contenedor
+    galleryContainer.innerHTML = "";
+
+    // Insertar fotos filtradas
+    filtered.forEach(foto => {
+        const div = document.createElement("div");
+        div.classList.add("gallery-item");
+
+        div.innerHTML = `
+            <img src="${foto.src}" alt="${foto.bodyPart}">
+            <p>${foto.info}</p>
+        `;
+
+        galleryContainer.appendChild(div);
+    });
+}
+
+// Detectar cambios en filtros
+bodyPartFilter.addEventListener("change", displayPhotos);
+methodFilter.addEventListener("change", displayPhotos);
+
+// Mostrar todas las fotos al cargar
+displayPhotos();
 
 // Función para leer CSV
 async function loadCSV(path) {
