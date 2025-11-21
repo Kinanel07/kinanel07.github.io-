@@ -13,54 +13,44 @@ const scoreInferiorMethod = document.querySelector("#score-inferior .score-metho
 const recomendacionesContainer = document.getElementById("recomendaciones-container");
 const tablaDatosContainer = document.getElementById("tabla-datos");
 // Datos de ejemplo: reemplaza con tus rutas y datos reales
+// Datos de ejemplo: reemplaza con tus rutas reales
 const fotosData = [
-    {src: "fotos/pelvis1.jpg", bodyPart: "Pelvis", method: "Metodo1", info: "Datos de Pelvis, Método 1"},
-    {src: "fotos/pelvis2.jpg", bodyPart: "Pelvis", method: "Metodo2", info: "Datos de Pelvis, Método 2"},
-    {src: "fotos/l5_1.jpg", bodyPart: "L5", method: "Metodo1", info: "Datos de L5, Método 1"},
-    {src: "fotos/t8_1.jpg", bodyPart: "T8", method: "Metodo1", info: "Datos de T8, Método 1"},
-    // Agrega más fotos según tu repositorio
+    {bodyPart: "Pelvis", src: "fotos/pelvis.jpg", info: "Información Pelvis"},
+    {bodyPart: "L5", src: "fotos/l5.jpg", info: "Información L5"},
+    {bodyPart: "T8", src: "fotos/t8.jpg", info: "Información T8"},
+    {bodyPart: "Head", src: "fotos/head.jpg", info: "Información Head"},
+    // Agrega más fotos para cada parte
 ];
 
-// Referencias a elementos
 const galleryContainer = document.getElementById("gallery-container");
 const bodyPartFilter = document.getElementById("body-part-filter");
-const methodFilter = document.getElementById("method-filter");
 
-// Función para mostrar fotos según filtros
 function displayPhotos() {
-    const bodyPartValue = bodyPartFilter.value;
-    const methodValue = methodFilter.value;
-
+    const selectedPart = bodyPartFilter.value;
+    
     // Filtrado
-    const filtered = fotosData.filter(foto => 
-        (bodyPartValue === "all" || foto.bodyPart === bodyPartValue) &&
-        (methodValue === "all" || foto.method === methodValue)
-    );
+    const filtered = fotosData.filter(foto => selectedPart === "all" || foto.bodyPart === selectedPart);
 
     // Limpiar contenedor
     galleryContainer.innerHTML = "";
 
-    // Insertar fotos filtradas
+    // Mostrar fotos filtradas
     filtered.forEach(foto => {
         const div = document.createElement("div");
         div.classList.add("gallery-item");
-
         div.innerHTML = `
             <img src="${foto.src}" alt="${foto.bodyPart}">
             <p>${foto.info}</p>
         `;
-
         galleryContainer.appendChild(div);
     });
 }
 
-// Detectar cambios en filtros
+// Detectar cambios en el filtro
 bodyPartFilter.addEventListener("change", displayPhotos);
-methodFilter.addEventListener("change", displayPhotos);
 
-// Mostrar todas las fotos al cargar
+// Mostrar todas al cargar
 displayPhotos();
-
 // Función para leer CSV
 async function loadCSV(path) {
     const response = await fetch(path);
