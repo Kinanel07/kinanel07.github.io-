@@ -5,22 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard XSens</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <!-- Menú superior -->
     <header>
         <nav>
             <ul>
                 <li><a href="#video-section">Video</a></li>
                 <li><a href="#scores-section">Scores</a></li>
+                <li><a href="#fotos-section">Fotos</a></li>
                 <li><a href="#recomendaciones-section">Recomendaciones</a></li>
                 <li><a href="#datos-section">Datos</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Sección Video -->
+    <!-- Video -->
     <section id="video-section" class="section">
         <h2>Simulación Movimiento XSens (3D)</h2>
         <div class="video-container">
@@ -28,42 +27,24 @@
         </div>
     </section>
 
-<section id="scores-section" class="section">
-    <h2>Scores de Postura</h2>
-    <div class="cards-container">
-        <div class="card" id="score-general">
-            <h3>Score General</h3>
-            <p class="score-value">--</p>
-            <p class="score-method">Método: --</p>
+    <!-- Scores -->
+    <section id="scores-section" class="section">
+        <h2>Scores de Postura</h2>
+        <div class="cards-container">
+            <div class="card" id="score-general">
+                <h3>Score General</h3>
+                <p class="score-value">--</p>
+                <p class="score-method">Método: --</p>
+            </div>
         </div>
-        <div class="card" id="score-superior">
-            <h3>Score Superior</h3>
-            <p class="score-value">--</p>
-            <p class="score-method">Método: --</p>
-        </div>
-        <div class="card" id="score-inferior">
-            <h3>Score Inferior</h3>
-            <p class="score-value">--</p>
-            <p class="score-method">Método: --</p>
-        </div>
-    </div>
+        <div id="scores-partes" class="scores-partes-container"></div>
+    </section>
 
-    <!-- Contenedor para scores por partes -->
-    <div id="scores-partes" class="scores-partes-container"></div>
-</section>
-
-<!-- Scores por partes -->
-<div id="scores-partes" class="scores-partes-container"></div>
-
-
-
-    <!-- Sección Fotos -->
+    <!-- Fotos -->
     <section id="fotos-section" class="section">
-        <h2>Galería de Fotos XSens (por parte del cuerpo)</h2>
-
-        <!-- Filtros -->
+        <h2>Galería de Fotos XSens</h2>
         <div class="filters">
-            <label for="body-part-filter">Selecciona parte del cuerpo:</label>
+            <label for="body-part-filter">Parte del cuerpo:</label>
             <select id="body-part-filter">
                 <option value="all">Todas</option>
                 <option value="Pelvis">Pelvis</option>
@@ -72,23 +53,8 @@
                 <option value="T12">T12</option>
                 <option value="T8">T8</option>
                 <option value="Neck">Neck</option>
-                <option value="Head">Head</option>
                 <option value="Right Shoulder">Right Shoulder</option>
-                <option value="Right Upper Arm">Right Upper Arm</option>
-                <option value="Right Forearm">Right Forearm</option>
-                <option value="Right Hand">Right Hand</option>
                 <option value="Left Shoulder">Left Shoulder</option>
-                <option value="Left Upper Arm">Left Upper Arm</option>
-                <option value="Left Forearm">Left Forearm</option>
-                <option value="Left Hand">Left Hand</option>
-                <option value="Right Upper Leg">Right Upper Leg</option>
-                <option value="Right Lower Leg">Right Lower Leg</option>
-                <option value="Right Foot">Right Foot</option>
-                <option value="Right Toe">Right Toe</option>
-                <option value="Left Upper Leg">Left Upper Leg</option>
-                <option value="Left Lower Leg">Left Lower Leg</option>
-                <option value="Left Foot">Left Foot</option>
-                <option value="Left Toe">Left Toe</option>
             </select>
 
             <label for="method-filter">Método:</label>
@@ -100,11 +66,10 @@
             </select>
         </div>
 
-        <!-- Contenedor de fotos -->
         <div id="gallery-container" class="gallery"></div>
     </section>
 
-    <!-- Sección Recomendaciones -->
+    <!-- Recomendaciones -->
     <section id="recomendaciones-section" class="section">
         <h2>Recomendaciones</h2>
         <div id="recomendaciones-container">
@@ -112,7 +77,7 @@
         </div>
     </section>
 
-    <!-- Sección Datos Adicionales -->
+    <!-- Datos -->
     <section id="datos-section" class="section">
         <h2>Datos Adicionales</h2>
         <div id="tabla-datos"></div>
