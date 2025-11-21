@@ -43,7 +43,7 @@ function displayPhotos() {
         const div = document.createElement("div");
         div.classList.add("gallery-item");
         div.innerHTML = `
-            <img src="fotos/${foto.src}" alt="${foto.bodyPart}">
+            <img src="${foto.src}" alt="${foto.bodyPart}">
             <p>${foto.info}</p>
         `;
         galleryContainer.appendChild(div);
