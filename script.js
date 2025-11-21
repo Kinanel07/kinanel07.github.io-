@@ -1,24 +1,18 @@
-// IDs de las tarjetas
-const scoreGeneralEl = document.querySelector("#score-general .score-value");
-const scoreGeneralMethod = document.querySelector("#score-general .score-method");
-const recomendacionesContainer = document.getElementById("recomendaciones-container");
-const tablaDatosContainer = document.getElementById("tabla-datos");
 const scoresContainer = document.getElementById("scores-partes");
-
-// Fotos con parte y método
-const fotosData = [
-    {bodyPart: "Pelvis", method: "REBA", src: "pelvis_reba.jpeg", info: "Información Pelvis REBA"},
-    {bodyPart: "Pelvis", method: "RULA", src: "pelvis_rula.jpeg", info: "Información Pelvis RULA"},
-    {bodyPart: "L5", method: "REBA", src: "l5_reba.jpeg", info: "Información L5 REBA"},
-    {bodyPart: "L5", method: "RULA", src: "l5_rula.jpeg", info: "Información L5 RULA"},
-    {bodyPart: "T8", method: "REBA", src: "upper_reba.jpeg", info: "Información Upperleg REBA"},
-];
-
-// Galería
 const galleryContainer = document.getElementById("gallery-container");
 const bodyPartFilter = document.getElementById("body-part-filter");
 const methodFilter = document.getElementById("method-filter");
 
+// Fotos: asegúrate que estén en la misma carpeta que HTML
+const fotosData = [
+    {bodyPart: "Pelvis", method: "REBA", src: "pelvis_reba.jpeg", info: "Pelvis REBA"},
+    {bodyPart: "Pelvis", method: "RULA", src: "pelvis_rula.jpeg", info: "Pelvis RULA"},
+    {bodyPart: "L5", method: "REBA", src: "l5_reba.jpeg", info: "L5 REBA"},
+    {bodyPart: "L5", method: "RULA", src: "l5_rula.jpeg", info: "L5 RULA"},
+    {bodyPart: "T8", method: "REBA", src: "upper_reba.jpeg", info: "T8 REBA"},
+];
+
+// Mostrar fotos
 function displayPhotos() {
     const selectedPart = bodyPartFilter.value;
     const selectedMethod = methodFilter.value;
@@ -29,9 +23,8 @@ function displayPhotos() {
     );
 
     galleryContainer.innerHTML = "";
-
-    if(filtered.length === 0){
-        galleryContainer.innerHTML = "<p>No hay fotos disponibles para esta selección.</p>";
+    if (filtered.length === 0) {
+        galleryContainer.innerHTML = "<p>No hay fotos para esta selección.</p>";
         return;
     }
 
@@ -52,9 +45,9 @@ displayPhotos();
 
 // Función para leer CSV
 async function loadCSV(path) {
-    const response = await fetch(path);
-    const data = await response.text();
-    const lines = data.split("\n").filter(l => l.trim() !== "");
+    const res = await fetch(path);
+    const text = await res.text();
+    const lines = text.split("\n").filter(l => l.trim() !== "");
     const headers = lines[0].split(",");
     const rows = lines.slice(1).map(line => {
         const values = line.split(",");
@@ -65,67 +58,27 @@ async function loadCSV(path) {
     return { headers, rows };
 }
 
-// Ajustar color de score 0-3
+// Color según puntaje (0-3)
 function getScoreColor(score) {
     score = parseFloat(score);
-    if(score >= 3) return "#ff3b30"; // rojo
-    if(score >= 2) return "#ffcc00"; // amarillo
-    return "#34c759"; // verde
+    if(score >= 3) return "#ff3b30";
+    if(score >= 2) return "#ffcc00";
+    return "#34c759";
 }
 
-// Mostrar tabla
-function mostrarTabla(headers, rows) {
-    const table = document.createElement("table");
-    table.style.width = "100%";
-    table.style.borderCollapse = "collapse";
-    table.style.fontSize = "0.9em";
-
-    const thead = document.createElement("thead");
-    const trHead = document.createElement("tr");
-    headers.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        th.style.padding = "8px";
-        th.style.borderBottom = "1px solid #ccc";
-        th.style.textAlign = "center";
-        trHead.appendChild(th);
-    });
-    thead.appendChild(trHead);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    rows.forEach(row => {
-        const tr = document.createElement("tr");
-        headers.forEach(h => {
-            const td = document.createElement("td");
-            td.textContent = row[h];
-            td.style.padding = "6px";
-            td.style.textAlign = "center";
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
-    tablaDatosContainer.innerHTML = "";
-    tablaDatosContainer.appendChild(table);
-}
-
-// Mostrar scores por parte y promedio
+// Mostrar scores por parte y promedio general
 function mostrarScoresPartes(rows) {
     scoresContainer.innerHTML = "";
-
-    let totalReba = 0;
-    let totalRula = 0;
-    let count = 0;
+    let totalREBA = 0, totalRULA = 0, count = 0;
 
     rows.forEach(row => {
         const part = row["Parte"];
         const reba = parseFloat(row["REBA"]) || 0;
         const rula = parseFloat(row["RULA"]) || 0;
-        const promedio = ((reba + rula)/2).toFixed(1);
+        const promedio = ((reba+rula)/2).toFixed(1);
 
-        totalReba += reba;
-        totalRula += rula;
+        totalREBA += reba;
+        totalRULA += rula;
         count++;
 
         const div = document.createElement("div");
@@ -139,24 +92,17 @@ function mostrarScoresPartes(rows) {
         scoresContainer.appendChild(div);
     });
 
-    const promedioGeneral = ((totalReba + totalRula)/(2*count)).toFixed(1);
+    const promedioGeneral = ((totalREBA + totalRULA)/(2*count)).toFixed(1);
     const divProm = document.createElement("div");
     divProm.classList.add("score-general-part");
     divProm.innerHTML = `<h3>Promedio General REBA/RULA: <span style="color:${getScoreColor(promedioGeneral)}">${promedioGeneral}</span></h3>`;
     scoresContainer.prepend(divProm);
-
-    // Actualizar tarjeta general
-    scoreGeneralEl.textContent = promedioGeneral;
-    scoreGeneralMethod.textContent = "Promedio REBA/RULA";
 }
 
-// Función principal
+// Inicializar todo
 async function init() {
-    const resultadosData = await loadCSV("RESULTADOS_PUNTAJES-4.csv");
-
-    mostrarScoresPartes(resultadosData.rows);
-    mostrarTabla(resultadosData.headers, resultadosData.rows);
+    const data = await loadCSV("RESULTADOS_PUNTAJES-4.csv");
+    mostrarScoresPartes(data.rows);
 }
 
-// Inicializar
 init();
