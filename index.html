@@ -1,521 +1,75 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Dashboard Postural — Sensores + Video</title>
-
-<!-- Plotly para gráficos -->
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-<style>
-  :root{
-    --sidebar:#0b1220; --accent:#00c3ff; --card:#ffffff;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,system-ui,Arial;background:#f3f6fa;color:#0b1220}
-  .sidebar{
-    width:240px;background:var(--sidebar);color:#fff;height:100vh;position:fixed;padding:20px;
-  }
-  .sidebar h2{margin:6px 0 20px;color:var(--accent)}
-  .sidebar a{display:block;color:#ddd;text-decoration:none;margin:10px 0}
-  .main{margin-left:260px;padding:24px}
-  .row{display:flex;gap:16px;flex-wrap:wrap}
-  .card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(11,18,32,0.06);flex:1}
-  .kpi{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px}
-  .controls label{display:block;margin:6px 0;font-size:14px}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:8px;border-bottom:1px solid #e9eef6;text-align:left;font-size:13px}
-  th{background:#0b1220;color:#fff}
-  button{background:var(--accent);border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
-  input[type=file]{display:block;margin-top:6px}
-  .small{font-size:12px;color:#666}
-  #videoCanvas{max-width:100%;border-radius:6px}
-  .list-scroll{max-height:300px;overflow:auto}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard XSens</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
+    <!-- Menú superior -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#video-section">Video</a></li>
+                <li><a href="#scores-section">Scores</a></li>
+                <li><a href="#recomendaciones-section">Recomendaciones</a></li>
+                <li><a href="#datos-section">Datos</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<div class="sidebar">
-  <h2>Posture Dashboard</h2>
-  <a href="#datos">Datos (CSV/JSON)</a>
-  <a href="#filtros">Filtros & Peores Momentos</a>
-  <a href="#visual">Visualización (gráfica)</a>
-  <a href="#video">Video & Frame</a>
-  <a href="#tabla">Tabla de Momentos</a>
-  <hr style="border:none;height:1px;background:#23303b;margin-top:12px">
-  <div class="small">Archivos esperados en la raíz:</div>
-  <ul class="small">
-    <li>data.csv / data.json</li>
-    <li>video.mp4 (o link público)</li>
-  </ul>
-</div>
-
-<div class="main">
-  <h1>Informe Postural — Sensores y Video</h1>
-
-  <!-- UPLOAD / LOAD CONFIG -->
-  <div class="row">
-    <div class="card" style="flex:0 0 350px">
-      <h3 id="datos">Cargar datos</h3>
-      <div class="small">Puedes: 1) Cargar archivo local o 2) Usar archivos en el repo (data.csv / data.json) si están en la misma ruta que index.html.</div>
-
-      <div style="margin-top:12px">
-        <label>Archivo de datos (CSV o JSON) — local upload</label>
-        <input id="fileInput" type="file" accept=".csv,application/json">
-      </div>
-
-      <div style="margin-top:12px">
-        <label>O carga desde repo (nombre exacto):</label>
-        <input id="remoteDataName" placeholder="data.csv o data.json" style="width:100%;padding:8px">
-        <button id="loadRemote">Cargar desde repo</button>
-      </div>
-
-      <hr>
-
-      <label>Video (archivo local o URL pública):</label>
-      <input id="videoInput" type="file" accept="video/*">
-      <div style="margin-top:8px">
-        <input id="videoUrl" placeholder="https://.../video.mp4" style="width:100%;padding:8px">
-        <button id="loadVideoUrl">Usar URL</button>
-      </div>
-
-      <hr>
-
-      <label>Configuración:</label>
-      <div class="small">FPS (frames por segundo) — importante para mapear frame ↔ tiempo</div>
-      <input id="fps" type="number" value="30" min="1" style="width:100%;padding:6px;margin-top:6px">
-
-      <div style="margin-top:12px">
-        <button id="autoDetect">Detectar campos & previsualizar</button>
-      </div>
-    </div>
-
-    <!-- KPIs -->
-    <div class="card" style="flex:1 1 400px">
-      <h3>Resumen rápido</h3>
-      <div class="row" id="kpis">
-        <div class="card kpi" style="flex:1;min-width:130px">
-          <div>
-            <div class="small">Duración aprox.</div>
-            <div id="kpi-duration" style="font-weight:700">—</div>
-          </div>
+    <!-- Sección Video -->
+    <section id="video-section" class="section">
+        <h2>Simulación Movimiento XSens (3D)</h2>
+        <div class="video-container">
+            <iframe src="video/interactive_3d.html" width="100%" height="750px" frameborder="0"></iframe>
         </div>
-        <div class="card kpi" style="flex:1;min-width:130px">
-          <div>
-            <div class="small">Frames</div>
-            <div id="kpi-frames" style="font-weight:700">—</div>
-          </div>
+    </section>
+
+    <!-- Sección Scores -->
+    <section id="scores-section" class="section">
+        <h2>Scores de Postura</h2>
+        <div class="cards-container">
+            <div class="card" id="score-general">
+                <h3>Score General</h3>
+                <p class="score-value">--</p>
+                <p class="score-method">Método: --</p>
+            </div>
+            <div class="card" id="score-superior">
+                <h3>Score Superior</h3>
+                <p class="score-value">--</p>
+                <p class="score-method">Método: --</p>
+            </div>
+            <div class="card" id="score-inferior">
+                <h3>Score Inferior</h3>
+                <p class="score-value">--</p>
+                <p class="score-method">Método: --</p>
+            </div>
         </div>
-        <div class="card kpi" style="flex:1;min-width:130px">
-          <div>
-            <div class="small">Peores momentos</div>
-            <div id="kpi-worst" style="font-weight:700">—</div>
-          </div>
+    </section>
+
+    <!-- Sección Recomendaciones -->
+    <section id="recomendaciones-section" class="section">
+        <h2>Recomendaciones</h2>
+        <div id="recomendaciones-container">
+            <p>Cargando recomendaciones...</p>
         </div>
-      </div>
+    </section>
 
-      <hr>
+    <!-- Sección Datos Adicionales -->
+    <section id="datos-section" class="section">
+        <h2>Datos Adicionales</h2>
+        <div id="tabla-datos">
+            <p>Cargando CSV...</p>
+        </div>
+    </section>
 
-      <h4 id="filtros">Filtros para seleccionar peores momentos</h4>
-      <label class="small">Modo:</label>
-      <select id="modeSelect" style="width:100%;padding:6px">
-        <option value="topn">Top N (peor score)</option>
-        <option value="threshold">Por umbral (score ≥ umbral)</option>
-      </select>
+    <footer>
+        <p>Dashboard XSens - Minimalista estilo Apple</p>
+    </footer>
 
-      <div id="topnDiv" style="margin-top:8px">
-        <label>Top N</label>
-        <input id="topN" type="number" value="10" style="width:100%;padding:6px">
-      </div>
-
-      <div id="thresholdDiv" style="margin-top:8px;display:none">
-        <label>Umbral (score)</label>
-        <input id="threshold" type="number" value="5" min="0" style="width:100%;padding:6px">
-      </div>
-
-      <div style="margin-top:12px">
-        <button id="findWorst">Encontrar peores momentos</button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Visualization and plots -->
-  <div class="row" style="margin-top:16px">
-    <div class="card" style="flex:1 1 620px">
-      <h3 id="visual">Gráfica general (serie temporal)</h3>
-      <div class="small">Selecciona una señal para ver su serie completa. Las marcas rojas son los "peores momentos" detectados.</div>
-      <div style="margin-top:8px">
-        <label>Señal:</label>
-        <select id="signalSelect" style="width:100%;padding:6px"></select>
-      </div>
-      <div id="plot" style="height:380px;margin-top:12px"></div>
-    </div>
-
-    <div class="card" style="flex:0 0 360px">
-      <h3 id="video">Video y Frame</h3>
-      <div class="small">Reproducir video y saltar a frame (se necesita FPS correcto).</div>
-      <video id="video" controls style="width:100%;border-radius:8px;margin-top:8px">
-        <!-- source agregado por JS -->
-      </video>
-
-      <div style="margin-top:10px">
-        <label>Ir a frame:</label>
-        <input id="frameNumber" type="number" min="0" value="0" style="width:100%;padding:6px">
-        <button id="goFrame" style="margin-top:8px">Ir a frame y capturar miniatura</button>
-      </div>
-
-      <canvas id="videoCanvas" width="640" height="360" style="margin-top:10px;display:block"></canvas>
-      <div class="small">Miniatura del frame</div>
-    </div>
-  </div>
-
-  <!-- Table of worst moments -->
-  <div class="row" style="margin-top:16px">
-    <div class="card" style="width:100%">
-      <h3 id="tabla">Tabla: Peores momentos</h3>
-      <div class="small">Haz clic en una fila para centrar el gráfico en ese frame y saltar el video.</div>
-      <div class="list-scroll" style="margin-top:8px">
-        <table id="momentsTable">
-          <thead>
-            <tr><th>#</th><th>Frame</th><th>Time (s)</th><th>Score</th><th>Notas</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-/*
-  Esquema esperado de data (CSV o JSON):
-  - Cada fila representa un frame.
-  - Campos mínimos: frame, time (s) OR time en ms.
-  - Variables de sensores: sensor1_angle, sensor2_angle, ... (nombres arbitrarios)
-  - Opcionales: rula, ba, ocra (si ya vienen calculados)
-*/
-
-// Variables globales
-let rawData = [];           // array de objetos por frame
-let fields = [];            // nombres de columnas
-let sensorFields = [];      // columnas de sensores (ángulos)
-let scoreFieldNames = ['rula','ba','ocra']; // posibles campos de score
-let computedScores = [];    // array de {frame, time, score, ...}
-let videoElem = document.getElementById('video');
-let fpsInput = document.getElementById('fps');
-
-// UTIL: parse CSV simple
-function csvToObjects(csvText) {
-  const lines = csvText.trim().split(/\r?\n/);
-  const headers = lines[0].split(',').map(h=>h.trim());
-  return lines.slice(1).map(line=>{
-    const cols = line.split(',');
-    const obj = {};
-    headers.forEach((h,i)=> obj[h]=cols[i]!==undefined?cols[i].trim():'');
-    return obj;
-  });
-}
-
-function toNumberSafe(v){ const n = parseFloat(v); return isNaN(n)?null:n; }
-
-// LOAD local file
-document.getElementById('fileInput').addEventListener('change', async (e)=>{
-  const f = e.target.files[0];
-  if(!f) return;
-  const text = await f.text();
-  if(f.name.endsWith('.csv')) {
-    rawData = csvToObjects(text);
-  } else {
-    try { rawData = JSON.parse(text); } catch(err){ alert('JSON inválido'); return;}
-  }
-  postLoad();
-});
-
-// LOAD remote from repo (same origin)
-document.getElementById('loadRemote').addEventListener('click', async ()=>{
-  const name = document.getElementById('remoteDataName').value.trim();
-  if(!name) return alert('Escribe el nombre del archivo en el repo (data.csv o data.json)');
-  try {
-    const res = await fetch(name);
-    if(!res.ok) throw new Error('archivo no encontrado en la ruta: ' + name);
-    const text = await res.text();
-    if(name.endsWith('.csv')) rawData = csvToObjects(text);
-    else rawData = JSON.parse(text);
-    postLoad();
-  } catch(err){
-    alert('Error al cargar: '+err.message);
-    console.error(err);
-  }
-});
-
-// LOAD video local
-document.getElementById('videoInput').addEventListener('change', (e)=>{
-  const f = e.target.files[0];
-  if(!f) return;
-  const url = URL.createObjectURL(f);
-  setVideoSource(url);
-});
-
-// LOAD video URL
-document.getElementById('loadVideoUrl').addEventListener('click', ()=>{
-  const url = document.getElementById('videoUrl').value.trim();
-  if(!url) return alert('Ingresa una URL de video');
-  setVideoSource(url);
-});
-
-function setVideoSource(url){
-  videoElem.pause();
-  videoElem.src = url;
-  videoElem.load();
-  videoElem.addEventListener('loadedmetadata', ()=>{
-    updateKPIvideo();
-  }, {once:true});
-}
-
-document.getElementById('autoDetect').addEventListener('click', ()=>{
-  if(!rawData.length) return alert('Carga primero los datos (CSV/JSON)');
-  detectFields();
-  buildSignalSelect();
-  drawPlot();
-});
-
-function postLoad(){
-  // normalizar tipos: convertir campos numericos
-  fields = Object.keys(rawData[0] || {});
-  rawData = rawData.map((r,i)=>{
-    const out = {};
-    fields.forEach(f=>{
-      // intentar número
-      const val = r[f];
-      const n = toNumberSafe(val);
-      out[f] = n===null?val:n;
-    });
-    // si no hay frame, intentar inferir por índice
-    if(out.frame===undefined) out.frame = i;
-    // si no hay time y tenemos fps, crear time
-    if(out.time===undefined){
-      const fps = parseFloat(fpsInput.value)||30;
-      out.time = (out.frame)/fps;
-    }
-    return out;
-  });
-  detectFields();
-  buildSignalSelect();
-  drawPlot();
-  updateKPIvideo();
-}
-
-// Detecta qué columnas son sensores y si hay scores precomputados
-function detectFields(){
-  fields = Object.keys(rawData[0] || {});
-  sensorFields = fields.filter(f=>/angle|sensor|joint|rot|angulo|shoulder|elbow/i.test(f));
-  // si no detecta sensores, considera todos numéricos excepto frame/time
-  if(sensorFields.length===0){
-    sensorFields = fields.filter(f=> (f!=='frame' && f!=='time' && typeof rawData[0][f] === 'number'));
-  }
-  // construir computedScores: si ya hay rula/ba/ocra, usa; si no, calcula heurística
-  computedScores = rawData.map(r=>{
-    const out = {frame: r.frame, time: r.time};
-    // Si alguno de rula/ba/ocra existe
-    scoreFieldNames.forEach(s=>{
-      if(r[s]!==undefined && r[s]!==null && !isNaN(+r[s])) out[s] = +r[s];
-    });
-    // compute a simple "score" fallback: suma de desviaciones de 90° (ejemplo)
-    if(out.rula===undefined){
-      // heurística simple: suma absolutas de (angle - 90)/30
-      let sum = 0; let count=0;
-      sensorFields.forEach(sf=>{
-        const v = toNumberSafe(r[sf]);
-        if(v!==null){ sum += Math.abs(v - 90); count++; }
-      });
-      out.heuristic = count? (sum/count)/30 * 10 : 0; // escala 0-~10
-    }
-    return out;
-  });
-
-  // actualizar KPIs
-  document.getElementById('kpi-frames').innerText = rawData.length;
-  const dur = rawData.length / (parseFloat(fpsInput.value)||30);
-  document.getElementById('kpi-duration').innerText = dur.toFixed(1) + ' s';
-}
-
-// Construir select de señales
-function buildSignalSelect(){
-  const sel = document.getElementById('signalSelect');
-  sel.innerHTML = '';
-  const candidates = sensorFields.length?sensorFields: Object.keys(rawData[0]).filter(f=>f!=='frame' && f!=='time');
-  candidates.forEach(c=>{
-    const opt = document.createElement('option'); opt.value=c; opt.innerText=c;
-    sel.appendChild(opt);
-  });
-  sel.addEventListener('change', drawPlot);
-}
-
-// Dibujar plot de la señal seleccionada con marcas de peores frames
-function drawPlot(highlightFrames=[]){
-  const sig = document.getElementById('signalSelect').value;
-  if(!sig) return;
-  const x = rawData.map(r=>r.time);
-  const y = rawData.map(r=> toNumberSafe(r[sig]) );
-  const trace = { x, y, mode:'lines', name: sig, line:{width:2}};
-  const markers = highlightFrames.map(f=>{
-    const row = rawData.find(r=>+r.frame === +f);
-    return { x: [row?row.time:0], y: [row?toNumberSafe(row[sig]):0], marker:{color:'red',size:8}, mode:'markers', name:'Peor' };
-  });
-
-  const layout = {margin:{t:30,l:40,r:20},xaxis:{title:'Time (s)'},yaxis:{title:sig}};
-  const data = [trace].concat(markers);
-  Plotly.newPlot('plot', data, layout, {responsive:true});
-}
-
-// Encontrar peores momentos segun modo
-document.getElementById('modeSelect').addEventListener('change', (e)=>{
-  const v=e.target.value;
-  document.getElementById('topnDiv').style.display = v==='topn'?'block':'none';
-  document.getElementById('thresholdDiv').style.display = v==='threshold'?'block':'none';
-});
-document.getElementById('findWorst').addEventListener('click', ()=>{
-  if(!rawData.length) return alert('Carga datos primero');
-  const mode = document.getElementById('modeSelect').value;
-  let selected = [];
-  // construir an array {frame, time, score}
-  const arr = computedScores.map(s=>{
-    // preferir rula>ba>ocra>heuristic
-    const score = s.rula!==undefined? s.rula : (s.ba!==undefined? s.ba : (s.ocra!==undefined? s.ocra : s.heuristic));
-    return {frame: s.frame, time: s.time, score: score || 0};
-  });
-  if(mode==='topn'){
-    const n = Math.max(1, parseInt(document.getElementById('topN').value) || 10);
-    selected = arr.slice().sort((a,b)=>b.score - a.score).slice(0,n);
-  } else {
-    const th = parseFloat(document.getElementById('threshold').value) || 0;
-    selected = arr.filter(a=>a.score >= th).sort((a,b)=>b.score-a.score);
-  }
-
-  // actualizar KPI
-  document.getElementById('kpi-worst').innerText = selected.length;
-  // llenar tabla
-  populateTable(selected);
-  // dibujar plot con marcas
-  const frames = selected.map(s=>s.frame);
-  drawPlot(frames);
-});
-
-// TABLE population
-function populateTable(list){
-  const tbody = document.querySelector('#momentsTable tbody'); tbody.innerHTML = '';
-  list.forEach((it,idx)=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${idx+1}</td><td>${it.frame}</td><td>${(it.time||0).toFixed(3)}</td><td>${(it.score||0).toFixed(2)}</td><td><button data-frame="${it.frame}" class="btnJump">Ver</button></td>`;
-    tbody.appendChild(tr);
-  });
-  // attach clicks
-  document.querySelectorAll('.btnJump').forEach(b=>{
-    b.addEventListener('click', ()=>{ goToFrameAndCapture(+b.dataset.frame); });
-  });
-}
-
-// go to frame button
-document.getElementById('goFrame').addEventListener('click', ()=>{
-  const f = parseInt(document.getElementById('frameNumber').value) || 0;
-  goToFrameAndCapture(f);
-});
-
-// Seek video to frame and capture to canvas
-async function goToFrameAndCapture(frame){
-  const fps = parseFloat(document.getElementById('fps').value)||30;
-  const t = frame / fps;
-  if(!videoElem.src) return alert('Carga el video primero (local o URL).');
-  // seek
-  try {
-    await seekVideo(videoElem, t);
-    // draw to canvas
-    const canvas = document.getElementById('videoCanvas');
-    canvas.width = videoElem.videoWidth;
-    canvas.height = videoElem.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElem, 0, 0, canvas.width, canvas.height);
-    // optionally, highlight sensors overlay? (no pose mapping available)
-    // update frame number input
-    document.getElementById('frameNumber').value = frame;
-  } catch(err){
-    console.error('seek error', err);
-    alert('No se pudo ir al frame: ' + err.message);
-  }
-}
-
-// helper: seek video to time (returns promise once seeked)
-function seekVideo(video, time){
-  return new Promise((resolve,reject)=>{
-    const onSeeked = function(){
-      video.removeEventListener('seeked', onSeeked);
-      clearTimeout(timeout);
-      resolve();
-    };
-    const onError = function(){ video.removeEventListener('error', onError); reject(new Error('Video error')); };
-    video.addEventListener('seeked', onSeeked);
-    video.addEventListener('error', onError);
-    video.currentTime = Math.min(Math.max(0, time), Math.max(0, video.duration || time));
-    const timeout = setTimeout(()=>{ video.removeEventListener('seeked', onSeeked); reject(new Error('seek timeout (video largo o CORS)')); }, 8000);
-  });
-}
-
-// Update KPIs video duration if video loaded
-function updateKPIvideo(){
-  const frames = rawData.length || 0;
-  const fps = parseFloat(document.getElementById('fps').value)||30;
-  const dur = frames / fps;
-  document.getElementById('kpi-duration').innerText = (videoElem.duration? videoElem.duration.toFixed(1) + ' s (video)' : dur.toFixed(1) + ' s (estim)') ;
-  // If video loaded and rawData frames unknown, try to align
-  if(videoElem.duration && frames === 0 && fps){
-    const estFrames = Math.round(videoElem.duration * fps);
-    document.getElementById('kpi-frames').innerText = estFrames;
-  }
-}
-
-// small UX: if user clicks a row (not button) center chart on that frame
-document.querySelector('#momentsTable tbody').addEventListener('click', (e)=>{
-  const el = e.target.closest('tr');
-  if(!el) return;
-  const frame = el.children[1].innerText;
-  // center plot on that frame/time
-  const row = rawData.find(r=>+r.frame === +frame);
-  if(row){
-    const t = row.time;
-    // zoom around t ± window
-    const win = 1; // seconds
-    Plotly.relayout('plot', { 'xaxis.range':[t-win, t+win] });
-    // jump video
-    goToFrameAndCapture(+frame);
-  }
-});
-
-// ON LOAD: try load default files if exist (data.csv, video.mp4)
-(async function tryDefaultLoad(){
-  // Don't fail loudly; if files not present, user uses upload
-  try {
-    // attempt data.csv
-    const resp = await fetch('data.csv');
-    if(resp.ok){
-      const txt = await resp.text();
-      rawData = csvToObjects(txt);
-      postLoad();
-    } else {
-      // try data.json
-      const r2 = await fetch('data.json');
-      if(r2.ok){ rawData = await r2.json(); postLoad(); }
-    }
-  } catch(e){ /* ignore */ }
-  // video
-  try {
-    const r = await fetch('video.mp4', {method:'HEAD'});
-    if(r.ok) setVideoSource('video.mp4');
-  } catch(e){ /* ignore */ }
-})();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
