@@ -196,14 +196,22 @@ const bodyParts = [
 // Contenedor de scores por parte
 const scoresContainer = document.getElementById("scores-partes");
 
-// Función para mostrar scores por parte y método
 function mostrarScoresPartes(rows) {
     scoresContainer.innerHTML = ""; // limpiar contenedor
+
+    let totalReba = 0;
+    let totalRula = 0;
+    let count = 0;
 
     rows.forEach(row => {
         const part = row["Parte"];
         const rebaScore = parseFloat(row["REBA"]) || 0;
         const rulaScore = parseFloat(row["RULA"]) || 0;
+        const promedio = ((rebaScore + rulaScore) / 2).toFixed(1);
+
+        totalReba += rebaScore;
+        totalRula += rulaScore;
+        count++;
 
         const div = document.createElement("div");
         div.classList.add("score-part");
@@ -212,12 +220,20 @@ function mostrarScoresPartes(rows) {
             <h4>${part}</h4>
             <p>REBA: <span style="color:${getScoreColor(rebaScore)}">${rebaScore}</span></p>
             <p>RULA: <span style="color:${getScoreColor(rulaScore)}">${rulaScore}</span></p>
+            <p>Promedio: <span style="color:${getScoreColor(promedio)}">${promedio}</span></p>
         `;
 
         scoresContainer.appendChild(div);
     });
-}
 
+    // Mostrar promedio general al inicio
+    const promedioGeneral = ((totalReba + totalRula) / (2 * count)).toFixed(1);
+    const divPromedio = document.createElement("div");
+    divPromedio.classList.add("score-general-part");
+    divPromedio.innerHTML = `<h3>Promedio General REBA/RULA: <span style="color:${getScoreColor(promedioGeneral)}">${promedioGeneral}</span></h3>`;
+    
+    scoresContainer.prepend(divPromedio);
+}
 
 // Mostrar scores por parte
 mostrarScoresPartes(resultadosData.rows);
