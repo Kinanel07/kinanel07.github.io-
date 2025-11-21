@@ -14,14 +14,14 @@ const recomendacionesContainer = document.getElementById("recomendaciones-contai
 const tablaDatosContainer = document.getElementById("tabla-datos");
 // Datos de ejemplo: reemplaza con tus rutas y datos reales
 // Datos de ejemplo: reemplaza con tus rutas reales
+// Fotos con parte y método
 const fotosData = [
-    {bodyPart: "Pelvis", src: "pelvis_reba.jpeg", info: "Información Pelvis REBA"},
-    {bodyPart: "Pelvis", src: "pelvis_rula.jpeg", info: "Información Pelvis RULA"},
-    {bodyPart: "L5", src: "l5_reba.jpeg", info: "Información L5 REBA"},
-    {bodyPart: "L5", src: "l5_rula.jpeg", info: "Información L5 RULA"},
-    {bodyPart: "T8", src: "upper_reba.jpeg", info: "Información Upperleg REBA"},
-    
-    // Agrega más fotos para cada parte
+    {bodyPart: "Pelvis", method: "REBA", src: "pelvis_reba.jpeg", info: "Información Pelvis REBA"},
+    {bodyPart: "Pelvis", method: "RULA", src: "pelvis_rula.jpeg", info: "Información Pelvis RULA"},
+    {bodyPart: "L5", method: "REBA", src: "l5_reba.jpeg", info: "Información L5 REBA"},
+    {bodyPart: "L5", method: "RULA", src: "l5_rula.jpeg", info: "Información L5 RULA"},
+    {bodyPart: "T8", method: "REBA", src: "upper_reba.jpeg", info: "Información Upperleg REBA"},
+    // Agrega aquí todas tus fotos
 ];
 
 const galleryContainer = document.getElementById("gallery-container");
@@ -50,10 +50,11 @@ function displayPhotos() {
     });
 }
 
+// Eventos para actualizar la galería al cambiar filtros
 bodyPartFilter.addEventListener("change", displayPhotos);
 methodFilter.addEventListener("change", displayPhotos);
 
-// Mostrar al cargar
+// Mostrar fotos al cargar la página
 displayPhotos();
 // Función para leer CSV
 async function loadCSV(path) {
