@@ -12,16 +12,15 @@ const scoreInferiorMethod = document.querySelector("#score-inferior .score-metho
 
 const recomendacionesContainer = document.getElementById("recomendaciones-container");
 const tablaDatosContainer = document.getElementById("tabla-datos");
-// Datos de ejemplo: reemplaza con tus rutas y datos reales
-// Datos de ejemplo: reemplaza con tus rutas reales
-// Fotos con parte y método
+
+// Fotos con parte y método, ahora todos tienen la propiedad 'method'
 const fotosData = [
     {bodyPart: "Pelvis", method: "REBA", src: "pelvis_reba.jpeg", info: "Información Pelvis REBA"},
     {bodyPart: "Pelvis", method: "RULA", src: "pelvis_rula.jpeg", info: "Información Pelvis RULA"},
     {bodyPart: "L5", method: "REBA", src: "l5_reba.jpeg", info: "Información L5 REBA"},
     {bodyPart: "L5", method: "RULA", src: "l5_rula.jpeg", info: "Información L5 RULA"},
     {bodyPart: "T8", method: "REBA", src: "upper_reba.jpeg", info: "Información Upperleg REBA"},
-    // Agrega aquí todas tus fotos
+    // Agrega aquí todas tus fotos siguiendo el mismo formato
 ];
 
 const galleryContainer = document.getElementById("gallery-container");
@@ -32,6 +31,7 @@ function displayPhotos() {
     const selectedPart = bodyPartFilter.value;
     const selectedMethod = methodFilter.value;
 
+    // Filtrar fotos según ambos filtros
     const filtered = fotosData.filter(foto =>
         (selectedPart === "all" || foto.bodyPart === selectedPart) &&
         (selectedMethod === "all" || foto.method === selectedMethod)
@@ -43,19 +43,25 @@ function displayPhotos() {
         const div = document.createElement("div");
         div.classList.add("gallery-item");
         div.innerHTML = `
-            <img src="${foto.src}" alt="${foto.bodyPart}">
+            <img src="${foto.src}" alt="${foto.bodyPart}" style="width:200px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.3);">
             <p>${foto.info}</p>
         `;
         galleryContainer.appendChild(div);
     });
+
+    // Si no hay fotos que mostrar
+    if(filtered.length === 0){
+        galleryContainer.innerHTML = "<p>No hay fotos disponibles para esta selección.</p>";
+    }
 }
 
-// Eventos para actualizar la galería al cambiar filtros
+// Inicializar filtros
 bodyPartFilter.addEventListener("change", displayPhotos);
 methodFilter.addEventListener("change", displayPhotos);
 
 // Mostrar fotos al cargar la página
 displayPhotos();
+
 // Función para leer CSV
 async function loadCSV(path) {
     const response = await fetch(path);
@@ -114,7 +120,6 @@ function mostrarTabla(headers, rows) {
         th.style.padding = "8px";
         th.style.borderBottom = "1px solid #ccc";
         th.style.textAlign = "center";
-        thead.appendChild(th);
         trHead.appendChild(th);
     });
     thead.appendChild(trHead);
@@ -144,7 +149,7 @@ async function init() {
     const posData = await loadCSV(csvPosPath);
 
     // Tomamos los scores del CSV, ejemplo:
-    const ultimoRow = posData.rows[posData.rows.length-1]; // suponer que la última fila contiene scores finales
+    const ultimoRow = posData.rows[posData.rows.length-1]; 
     const scores = {
         general: ultimoRow['score_general'] || 0,
         superior: ultimoRow['score_superior'] || 0,
@@ -177,5 +182,5 @@ async function init() {
     mostrarTabla(posData.headers, posData.rows);
 }
 
-// Inicializar
+// Inicializar todo
 init();
