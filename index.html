@@ -27,47 +27,49 @@
         </div>
     </section>
 
-    <!-- Scores -->
     <section id="scores-section" class="section">
-        <h2>Scores de Postura</h2>
-        <div class="cards-container">
-            <div class="card" id="score-general">
-                <h3>Score General</h3>
-                <p class="score-value">--</p>
-                <p class="score-method">Método: --</p>
-            </div>
-        </div>
-        <div id="scores-partes" class="scores-partes-container"></div>
-    </section>
+    <h2>Scores de Postura</h2>
+    <div id="scores-partes" class="scores-partes-container"></div>
+</section>
 
-    <!-- Fotos -->
-    <section id="fotos-section" class="section">
-        <h2>Galería de Fotos XSens</h2>
-        <div class="filters">
-            <label for="body-part-filter">Parte del cuerpo:</label>
-            <select id="body-part-filter">
-                <option value="all">Todas</option>
-                <option value="Pelvis">Pelvis</option>
-                <option value="L5">L5</option>
-                <option value="L3">L3</option>
-                <option value="T12">T12</option>
-                <option value="T8">T8</option>
-                <option value="Neck">Neck</option>
-                <option value="Right Shoulder">Right Shoulder</option>
-                <option value="Left Shoulder">Left Shoulder</option>
-            </select>
+<section id="fotos-section" class="section">
+    <h2>Galería de Fotos XSens (por parte del cuerpo)</h2>
 
-            <label for="method-filter">Método:</label>
-            <select id="method-filter">
-                <option value="all">Todos</option>
-                <option value="REBA">REBA</option>
-                <option value="RULA">RULA</option>
-                <option value="OCRA">OCRA</option>
-            </select>
-        </div>
+    <div class="filters">
+        <label for="body-part-filter">Selecciona parte del cuerpo:</label>
+        <select id="body-part-filter">
+            <option value="all">Todas</option>
+            <option value="Pelvis">Pelvis</option>
+            <option value="L5">L5</option>
+            <option value="L3">L3</option>
+            <option value="T12">T12</option>
+            <option value="T8">T8</option>
+            <option value="Neck">Neck</option>
+            <option value="Right Shoulder">Right Shoulder</option>
+            <option value="Left Shoulder">Left Shoulder</option>
+            <option value="Right Upper Arm">Right Upper Arm</option>
+            <option value="Left Upper Arm">Left Upper Arm</option>
+            <option value="Right Forearm">Right Forearm</option>
+            <option value="Left Forearm">Left Forearm</option>
+            <option value="Right Hand">Right Hand</option>
+            <option value="Left Hand">Left Hand</option>
+            <option value="Right Lower Leg">Right Lower Leg</option>
+            <option value="Left Lower Leg">Left Lower Leg</option>
+            <option value="Right Foot">Right Foot</option>
+            <option value="Left Foot">Left Foot</option>
+        </select>
 
-        <div id="gallery-container" class="gallery"></div>
-    </section>
+        <label for="method-filter">Método:</label>
+        <select id="method-filter">
+            <option value="all">Todos</option>
+            <option value="REBA">REBA</option>
+            <option value="RULA">RULA</option>
+        </select>
+    </div>
+
+    <div id="gallery-container" class="gallery"></div>
+</section>
+
 
     <!-- Recomendaciones -->
     <section id="recomendaciones-section" class="section">
